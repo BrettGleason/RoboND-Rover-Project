@@ -57,8 +57,10 @@ def decision_step(Rover):
                     Rover.throttle = Rover.throttle_set
                     # Release the brake
                     Rover.brake = 0
-                    # Set steer to mean angle
-                    Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi), -15, 15)
+                    # Set steer to mean angle minus an offset for following walls
+                    steering_offset = 15
+                    steering_angle = np.mean(Rover.nav_angles * 180/np.pi) - steering_offset
+                    Rover.steer = np.clip(steering_angle, -15, 15)
                     Rover.mode = 'forward'
     # Just to make the rover do something 
     # even if no modifications have been made to the code
