@@ -3,17 +3,21 @@ import cv2
 
 # Identify pixels above the threshold
 # Threshold of RGB > 160 does a nice job of identifying ground pixels only
-def color_thresh(img, rgb_thresh=(160, 160, 160)):
+def color_thresh(img, rgb_thresh_lower=(160, 160, 160),
+                 rgb_thresh_upper=(255, 255, 255)):
     # Create an array of zeros same xy size as img, but single channel
     color_select = np.zeros_like(img[:,:,0])
-    # Require that each pixel be above all three threshold values in RGB
+    # Require that each pixel be between the upper and lower threshold values
     # above_thresh will now contain a boolean array with "True"
     # where threshold was met
-    above_thresh = (img[:,:,0] > rgb_thresh[0]) \
-                & (img[:,:,1] > rgb_thresh[1]) \
-                & (img[:,:,2] > rgb_thresh[2])
+    in_thresh = (img[:,:,0] > rgb_thresh_lower[0]) \
+                & (img[:,:,1] > rgb_thresh_lower[1]) \
+                & (img[:,:,2] > rgb_thresh_lower[2]) \
+                & (img[:,:,0] < rgb_thresh_upper[0]) \
+                & (img[:,:,1] < rgb_thresh_upper[1]) \
+                & (img[:,:,2] < rgb_thresh_upper[2])
     # Index the array of zeros with the boolean array and set to 1
-    color_select[above_thresh] = 1
+    color_select[in_thresh] = 1
     # Return the binary image
     return color_select
 
@@ -40,20 +44,19 @@ def to_polar_coords(x_pixel, y_pixel):
 
 # Define a function to apply a rotation to pixel positions
 def rotate_pix(xpix, ypix, yaw):
-    # TODO:
     # Convert yaw to radians
+    yaw_rad = yaw * np.pi / 180
     # Apply a rotation
-    xpix_rotated = 0
-    ypix_rotated = 0
+    xpix_rotated = (xpix * np.cos(yaw_rad)) - (ypix * np.sin(yaw_rad))
+    ypix_rotated = (xpix * np.sin(yaw_rad)) + (ypix * np.cos(yaw_rad))
     # Return the result  
     return xpix_rotated, ypix_rotated
 
 # Define a function to perform a translation
 def translate_pix(xpix_rot, ypix_rot, xpos, ypos, scale): 
-    # TODO:
     # Apply a scaling and a translation
-    xpix_translated = 0
-    ypix_translated = 0
+    xpix_translated = xpos + (xpix_rot / scale)
+    ypix_translated = ypos + (ypix_rot / scale)
     # Return the result  
     return xpix_translated, ypix_translated
 
