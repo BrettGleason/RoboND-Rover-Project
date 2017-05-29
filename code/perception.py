@@ -85,8 +85,13 @@ def perspect_transform(img, src, dst):
 # Apply the above functions in succession and update the Rover state accordingly
 def perception_step(Rover):
     # Perform perception steps to update Rover()
-    # TODO: 
     # NOTE: camera image is coming to you in Rover.img
+    navigable_thresh_lower = (160, 160, 160)
+    sample_thresh_lower = (90, 90, 0)
+    sample_thresh_upper = (160, 160, 75)
+    obs_thresh_lower = (0, 0, 0)
+    obs_thresh_upper = (100, 100, 100)
+
     # 1) Define source and destination points for perspective transform
     dst_size = 5 
     bottom_offset = 6
