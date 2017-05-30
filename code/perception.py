@@ -103,7 +103,7 @@ def perception_step(Rover):
                       ])
     
     # Only add the new data to the map if roll & pitch are near 0
-    if (Rover.roll < 0.75 or Rover.roll > 359.25) and (Rover.pitch < 0.75 or Rover.pitch > 359.25)
+    if (Rover.roll < 0.75 or Rover.roll > 359.25) and (Rover.pitch < 0.75 or Rover.pitch > 359.25):
         # 2) Apply perspective transform
         warped = perspect_transform(Rover.img, source, destination)
 
