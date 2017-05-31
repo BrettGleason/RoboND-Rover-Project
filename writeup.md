@@ -32,8 +32,6 @@
 [image8]: ./calibration_images/rover_coords.png
 [image9]: ./calibration_images/sample_thresh.png
 
-[video1]: ./output/test_mapping_own_data.mp4
-
 ## [Rubric](https://review.udacity.com/#!/rubrics/916/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
@@ -92,23 +90,21 @@ Bottom Right: Masked Terrain Pixels After Coordinate Transform. Arrow Shows Mean
 
 Finally the image processing function is run on a set of images saved from a test run of the rover. 
 
-![alt text][video1]
-
-Video 1. Image Processing Function Applied to Images From a Rover Test Run.
-
 ### Autonomous Navigation and Mapping
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
 
+The skeleton of the perception_step() function was created using the process_image() function from the test notebook. The difference is that in perception_step() the image, position, and orientation data need to be coming from the Rover object where as the process_image() function takes that data from a Databucket object populated from the csv file a test run of the rover generates. The biggest difference between the Rover and the Databucket objects is that the Rover object store the x and y position data in a 2-tuple, while the Databucket object has separate arrays for x position and y position.
+
+Once the perception_step() function was created the rover could navigate autonomously in a way that would very nearly pass the requirements of the assignment. There were several challenges facing the rover that were addressed in the decision step.
+
+  1. Initially the rover would run into walls or obstacles and sometimes get stuck. By increasing the distance at which the rover initiates stopping in front of a wall or obstacle from 50 to 100 pixels I was able to improve this somewhat.
+  
 
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.  
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
-
-
-![alt text][image3]
 
 
