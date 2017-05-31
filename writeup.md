@@ -32,6 +32,8 @@
 [image8]: ./calibration_images/rover_coords.png
 [image9]: ./calibration_images/sample_thresh.png
 
+[video1]: ./output/test_mapping_own_data.mp4
+
 ## [Rubric](https://review.udacity.com/#!/rubrics/916/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
@@ -47,45 +49,52 @@ You're reading it!
 First an image with the gridlines was chosen to define the perspective transform. Source points were chosen on the corners of the gridline in the image, and mapped to a 10 pixel by 10 pixel square of output points.
 
 ![alt text][image1]
+
 Figure 1. Gridline Reference.
 
 Once points were chosen for the perspective transform, the transform was tested on a calibration image.
 
 ![alt text][image2]
+
 Figure 2. Calibration Image.
 
 ![alt text][image3]
+
 Figure 3. Perspective Transform.
 
 Once the perspective transform was functional, it was time to mask the image and determine what was navigable terrain and where any rock samples were. The function provided only used a lower bound for the color threshold, but I found it was necessary to also include an upper bound for rock sample detection. The upper and lower bounds of RGB values chosen for terrain mapping were: (160, 160, 160) and (255, 255, 255). The upper and lower bounds of RGB values chosen for sample detection were: (90, 90, 0) and (160, 160, 75). Below are examples of both masks applied to an image.
 
 ![alt text][image3]
+
 Figure 4. After Perspective Transform, Before Color Mask Applied.
 
 ![alt text][image6]
+
 Figure 5. Perspective Transform with Navigable Terrain Mask Applied.
 
 ![alt text][image9]
+
 Figure 6. Perspective Transform with Rock Sample Mask Applied.
 
 #### 2. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
 The first step in creating the process_image() function was to define the source and destination points for the perspective transform. I used the same values that were used in the Perspective Transform section of the test notebook. Next, the perspective transform function was applied to the input image. 
 
-![alt text][image4]
-Figure 7. An Input Image from the Rover Camera View.
-
-![alt text][image5]
-Figure 8. The Rover Camera View after the Perspective Transform is Applied.
-
 Once the overhead view was created it was time to determine which parts of the image were navigable terrain, rock samples, or obstacles. Because I was interested in 3 separate things I decided to use 3 different color thresholds to create 3 different masked images. The navigable terrain and rock sample masks used the threshold values described in the Perspective Transform section; the obstacle mask used a lower bound of (0, 0, 0) and an upper bound of (100, 100, 100).
 
-![alt text][image5]
-Figure 9. Perspective Transform with Color Mask Applied. Mask for Navigable Terrain only shown.
-
-Once the color masks were applied it was time to use those images to create a world map. For each of the color masked images a rotation was first applied to the pixels, using the rover's yaw value to rotate the pixels to a reference point where the rover's yaw would be 0. Next the pixels were placed on the world map using the rover's position vector and an appropriate scaling factor.
+After the color masks were applied it was time to use those images to create a world map. For each of the color masked images a rotation was first applied to the pixels, using the rover's yaw value to rotate the pixels to a reference point where the rover's yaw would be 0. Next the pixels were placed on the world map using the rover's position vector and an appropriate scaling factor.
 
 ![alt text][image8]
-Figure 10. Navigable Terrain Pixels Transformed from Rover Perspective to World Perspective. Arrow indicates Average angle of Navigable Terrain.
+
+Figure 7. Top left: Rover Camera View.
+Top Right: Perspective Transform Applied to Rover Camera View.
+Bottom Left: Color Mask Applied to Perspective Transform.
+Bottom Right: Masked Terrain Pixels After Coordinate Transform. Arrow Shows Mean Angle of Navigable Terrain.
+
+Finally the image processing function is run on a set of images saved from a test run of the rover. 
+
+![alt text][video1]
+
+Video 1. Image Processing Function Applied to Images From a Rover Test Run.
 
 ### Autonomous Navigation and Mapping
 
