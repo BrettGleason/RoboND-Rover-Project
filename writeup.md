@@ -100,11 +100,30 @@ Once the perception_step() function was created the rover could navigate autonom
 
   1. Initially the rover would run into walls or obstacles and sometimes get stuck. By increasing the distance at which the rover initiates stopping in front of a wall or obstacle from 50 to 100 pixels I was able to improve this somewhat.
   
+  2. The change in (1) improved the rover's performance, but it would still get stuck in certain circumstances. When there is a rock ahead of the rover but a clear path on either side of the rock, the vector lengths of the navigable terrain would be long enough that the rover's stop_forward distance would not be triggered. If the angles of the navigable terrain were roughly equal on either side of the obstacle, the rover would happily drive straight into the obstacle. To fix this, I changed the way the rover detected forward clearance. Instead of using the entire range of navigable terrain, I created a function that only took into account the length of the navigable terrain vectors within 15 degrees to the left or to the right of the rover. Using a narrow field of view to detect obstacles made the rover less likely to not detect an obstacle in its path.
+  
+  3. Fidelity would start out high and slowly creep towards 60%. I found that by increasing the lower bound of the color threshold for navigable terrain to (175, 175, 175) the fidelity was improved without noticeably affecting navigation.
+  
 
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.  
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+## Rover Settings:
+## Resolution: 1920 x 1080
+## Graphics Quality: Fantastic
+## Frames per second: 29
+
+Based on the way the drive_rover.py and decision.py files were already set up, once the perception.py file was completed the rover was very near to passing the project requirements. With the tweaks to the decision_step() and perception_step() functions described above the rover performance was improved to the point where it reliably fulfilled the project requirements.
+
+There were several improvements I wanted to make but was not able to due to time constraints. Below is the roadmap I created to fulfill the challenge requirements:
+
+  1. Prevent rover from getting stuck in circles or ignoring a narrow passageway in favor of a larger but already mapped passageway. I planned to tackle this by having the rover drop "breadcrumbs," and altering the steering angle to have a preference for directions without breadcrumbs. A breadcrumb trail could also be useful for returning to the starting position.
+  
+  2. Have the rover pick up samples. Telling the rover to pick up samples when it is near them would be fairly trivial. The interesting part of the problem is having the rover navigate to the samples and pick them up. In cases where there is only one sample in view I think it would be fairly easy to override the normal navigation, point the rover to the sample, and drive to it. If more than one sample was in view however, logic would have to be added to make sure the rover handles sample pickup one at a time. An especially difficult edge case might be if the rover sees two samples, drives to the first sample, but there is an obstacle directly between the first sample and the second sample. Now the rover couldn't just use the sample locations for navigation, it would need to drive around the obstacle in between.
+  
+  3. Ensure 100% of the terrain is mapped. As is the rover will map out large swaths of the terrain but it will miss small alcoves in the passages. My plan to tackle this was to look at the edges of the map and when the navigable terrain was not completely surrounded by obstacle terrain. This would let the rover find any gaps in its map, at least on the edges. I'm not sure how to handle any unmapped terrain between obstacles in the center of the map.
+  
+  4. Return to the starting position. I added code to have the rover record its starting position. My vision of the 'go-home' algorithm was to have the rover follow its breadcrumbs out of whatever passage it was in until there was a straight line of navigable terrain between it and the starting location.
 
 
