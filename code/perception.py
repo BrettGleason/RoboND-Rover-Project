@@ -42,6 +42,18 @@ def to_polar_coords(x_pixel, y_pixel):
     angles = np.arctan2(y_pixel, x_pixel)
     return dist, angles
 
+# Define a function to return the polar coordinates for just a 30 degree field of view
+def narrow_view(dist, angles):
+    narrow_dist = []
+    narrow_angles = []
+    lower_thresh = 15 * np.pi / 180
+    upper_thresh = 345 * np.pi / 180
+    for angle, distance in zip(angles, dist):
+        if angle < lower_thresh or angle > upper_thresh:
+            narrow_angles.append(angle)
+            narrow_dist.append(distance)
+    return narrow_dist, narrow_angles
+
 # Define a function to apply a rotation to pixel positions
 def rotate_pix(xpix, ypix, yaw):
     # Convert yaw to radians
@@ -146,7 +158,8 @@ def perception_step(Rover):
     # Rover.nav_dists = rover_centric_pixel_distances
     # Rover.nav_angles = rover_centric_angles
     Rover.nav_dists, Rover.nav_angles = to_polar_coords(xpix_rover_n, ypix_rover_n)
-    
+    Rover.narrow_dists, Rover.narrow_angles = narrow_view(Rover.nav_dists,
+                                                          Rover.nav_angles)
  
     
     
