@@ -89,6 +89,9 @@ Bottom Left: Color Mask Applied to Perspective Transform.
 Bottom Right: Masked Terrain Pixels After Coordinate Transform. Arrow Shows Mean Angle of Navigable Terrain.*
 
 Finally the image processing function is run on a set of images saved from a test run of the rover. 
+**Video output can be found under:
+RoboND-Rover-Project/output/test_mapping_own_data.mp4**
+
 
 ### Autonomous Navigation and Mapping
 
