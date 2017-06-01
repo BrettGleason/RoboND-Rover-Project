@@ -48,31 +48,31 @@ First an image with the gridlines was chosen to define the perspective transform
 
 ![alt text][image1]
 
-Figure 1. Gridline Reference.
+**Figure 1.** *Gridline Reference.*
 
 Once points were chosen for the perspective transform, the transform was tested on a calibration image.
 
 ![alt text][image2]
 
-Figure 2. Calibration Image.
+**Figure 2.** *Calibration Image.*
 
 ![alt text][image3]
 
-Figure 3. Perspective Transform.
+**Figure 3.** *Perspective Transform.*
 
 Once the perspective transform was functional, it was time to mask the image and determine what was navigable terrain and where any rock samples were. The function provided only used a lower bound for the color threshold, but I found it was necessary to also include an upper bound for rock sample detection. The upper and lower bounds of RGB values chosen for terrain mapping were: (160, 160, 160) and (255, 255, 255). The upper and lower bounds of RGB values chosen for sample detection were: (90, 90, 0) and (160, 160, 75). Below are examples of both masks applied to an image.
 
 ![alt text][image3]
 
-Figure 4. After Perspective Transform, Before Color Mask Applied.
+**Figure 4.** *After Perspective Transform, Before Color Mask Applied.*
 
 ![alt text][image6]
 
-Figure 5. Perspective Transform with Navigable Terrain Mask Applied.
+**Figure 5.** *Perspective Transform with Navigable Terrain Mask Applied.*
 
 ![alt text][image9]
 
-Figure 6. Perspective Transform with Rock Sample Mask Applied.
+**Figure 6.** *Perspective Transform with Rock Sample Mask Applied.*
 
 #### 2. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
 The first step in creating the process_image() function was to define the source and destination points for the perspective transform. I used the same values that were used in the Perspective Transform section of the test notebook. Next, the perspective transform function was applied to the input image. 
@@ -83,10 +83,10 @@ After the color masks were applied it was time to use those images to create a w
 
 ![alt text][image8]
 
-Figure 7. Top left: Rover Camera View.
+**Figure 7.** *Top left: Rover Camera View.
 Top Right: Perspective Transform Applied to Rover Camera View.
 Bottom Left: Color Mask Applied to Perspective Transform.
-Bottom Right: Masked Terrain Pixels After Coordinate Transform. Arrow Shows Mean Angle of Navigable Terrain.
+Bottom Right: Masked Terrain Pixels After Coordinate Transform. Arrow Shows Mean Angle of Navigable Terrain.*
 
 Finally the image processing function is run on a set of images saved from a test run of the rover. 
 
@@ -109,10 +109,10 @@ Once the perception_step() function was created the rover could navigate autonom
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
 
-## Rover Settings:
-## Resolution: 1920 x 1080
-## Graphics Quality: Fantastic
-## Frames per second: 29
+**Rover Settings:**
+**Resolution: 1920 x 1080**
+**Graphics Quality: Fantastic**
+**Frames per second: 29**
 
 Based on the way the drive_rover.py and decision.py files were already set up, once the perception.py file was completed the rover was very near to passing the project requirements. With the tweaks to the decision_step() and perception_step() functions described above the rover performance was improved to the point where it reliably fulfilled the project requirements.
 
