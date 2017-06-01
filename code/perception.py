@@ -98,7 +98,7 @@ def perspect_transform(img, src, dst):
 def perception_step(Rover):
     # Perform perception steps to update Rover()
     # NOTE: camera image is coming to you in Rover.img
-    navigable_thresh_lower = (165, 165, 165)
+    navigable_thresh_lower = (175, 175, 175)
     sample_thresh_lower = (90, 90, 0)
     sample_thresh_upper = (160, 160, 75)
     obs_thresh_lower = (0, 0, 0)
